@@ -204,6 +204,92 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('#privacy a').invoke('removeAttr', 'target').click()
       })
 
- 
-      
+
+      //Aula 11
+
+      it('Preencher Campos Obrigatórios e Envie o Formulário', function() {
+        //cy.clock congela tempo no navegador
+        cy.clock()
+        cy.get('#firstName').type('Luiz Gustavo')
+        cy.get('#lastName').type('Florindo')
+        cy.get('#email').type('luizgustavoflorindo@gmail.com')
+        cy.get('#phone').type('5511990025087')
+        cy.get('#support-type > :nth-child(3)').click()
+        cy.get('#check > [for="email"]').click()
+        cy.get('#open-text-area').type('Mussum Ipsum, cacilds vidis litro abertis.')
+        cy.get('.button').click()
+        cy.get('.success').should('be.visible')
+        // cy.tick avança no tempo
+        cy.tick(3000)
+        cy.get('.success').should('not.be.visible')
+    })
+    
+    //Exercício extra 1 - Times - Repete os testes conforme apontado
+
+    Cypress._.times(10, function(){
+      it('Repetir testes 10 vezes', function() {
+        cy.clock()
+        cy.get('#firstName').type('Luiz Gustavo')
+        cy.get('#lastName').type('Florindo')
+        cy.get('#email').type('luizgustavoflorindo@gmail.com')
+        cy.get('#phone').type('5511990025087')
+        cy.get('#support-type > :nth-child(3)').click()
+        cy.get('#check > [for="email"]').click()
+        cy.get('#open-text-area').type('Mussum Ipsum, cacilds vidis litro abertis.')
+        cy.get('.button').click()
+        cy.get('.success').should('be.visible')
+        cy.tick(3000)
+        cy.get('.success').should('not.be.visible')
+      })
+    })
+
+     //Exercício
+
+    it('Simular CTRL+Vpara gerar texto longo', function() {
+      const textoLongo = Cypress._.repeat('ABCDFGHIJKL ', 5)
+      cy.get('#open-text-area').type(textoLongo)
+    })
+
+     //Exercício extra 2
+
+    it('exibe e esconde as mensagens de sucesso e erro usando o .invoke', () => {
+      cy.get('.success')
+        .should('not.be.visible')
+        .invoke('show')
+        .should('be.visible')
+        .and('contain', 'Mensagem enviada com sucesso.')
+        .invoke('hide')
+        .should('not.be.visible')
+      cy.get('.error')
+        .should('not.be.visible')
+        .invoke('show')
+        .should('be.visible')
+        .and('contain', 'Valide os campos obrigatórios!')
+        .invoke('hide')
+        .should('not.be.visible')
+    })
+
+    //Exercício extra 3
+
+    it('preenche a area de texto usando o comando invoke', function() {
+      const textoLongo = Cypress._.repeat('ABCDFGHIJKL ', 5)
+      cy.get('#open-text-area').invoke('val', textoLongo)
+      .should('have.value', textoLongo)
+    })
+
+    //Exercício extra 4
+
+    it('faz uma requisição HTTP', function() {
+      cy.request('https://cac-tat.s3.eu-central-1.amazonaws.com/index.html')
+        .should(function(response) {
+          const { status, statusText, body} = response
+          expect(status).to.equal(200)
+          expect(statusText).to.equal('OK')
+          expect(body).to.include('CAC TAT')
+        })
+    })
+    it.only('encontre o gato', function(){
+      cy.get('#cat').should('not.be.visible')
+      .invoke('show').should('be.visible')
+    })
   })
