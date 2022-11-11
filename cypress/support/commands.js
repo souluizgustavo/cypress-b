@@ -1,0 +1,10 @@
+Cypress.Commands.add('fillMandatoryFieldsAndSubmit', function(){
+    cy.get('#firstName').type('Luiz Gustavo')
+        cy.get('#lastName').type('Florindo')
+        cy.get('#email').type('luizgustavoflorindo@gmail.com')
+        cy.get('#phone').type('5511990025087')
+        cy.get('#support-type > :nth-child(3)').click()
+        cy.get('#check > [for="email"]').click()
+        cy.get('#open-text-area').type('Mussum Ipsum, cacilds vidis litro abertis.')
+        cy.get('.button').click()
+})
